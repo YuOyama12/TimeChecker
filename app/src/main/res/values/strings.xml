@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TimeChecker</string>
+    <string name="app_description">指定した時刻が、指定した範囲内に含まれるかどうかを調べるアプリです。\n以下の情報を入力してください。</string>
+</resources>

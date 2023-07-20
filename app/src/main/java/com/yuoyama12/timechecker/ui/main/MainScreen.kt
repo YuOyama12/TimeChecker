@@ -1,36 +1,36 @@
 package com.yuoyama12.timechecker.ui.main
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.yuoyama12.timechecker.R
 import com.yuoyama12.timechecker.composable.MainButton
+import com.yuoyama12.timechecker.composable.RowOfCheckResultImageAndText
 import com.yuoyama12.timechecker.composable.RowWithSimpleHeader
 import com.yuoyama12.timechecker.composable.component.TimeField
 import com.yuoyama12.timechecker.data.Time
 
 private val timeFieldSpacerModifier = Modifier.padding(vertical = 6.dp)
+private val resultTextFontSize = 30.sp
 @Composable
 fun MainScreen() {
+    val viewModel: MainViewModel = hiltViewModel()
+    val checkResult by viewModel.checkResult.collectAsState()
+
     var selectedTime by rememberSaveable { mutableStateOf(Time()) }
     var startTime by rememberSaveable { mutableStateOf(Time()) }
     var endTime by rememberSaveable { mutableStateOf(Time()) }
-
-
 
     Column(
         modifier = Modifier.padding(horizontal = 12.dp, vertical = 16.dp)
@@ -104,7 +104,9 @@ fun MainScreen() {
 
         MainButton(
             modifier = Modifier.padding(vertical = 6.dp),
-            onClick = { },
+            onClick = {
+                viewModel.checkIfTimeIsInRange(selectedTime, startTime, endTime)
+            },
             buttonText = stringResource(R.string.check_button_text)
         )
 
@@ -113,5 +115,31 @@ fun MainScreen() {
             buttonText = stringResource(R.string.result_history_button_text)
         )
 
+        Column(
+            modifier = Modifier
+                .padding(vertical = 12.dp, horizontal = 24.dp)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.result_title),
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            if (checkResult != null) {
+                RowOfCheckResultImageAndText(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    imageSize = 82.dp,
+                    textFontSize = resultTextFontSize,
+                    isTrue = checkResult!!
+                )
+            } else {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    text = stringResource(R.string.no_result_text),
+                    fontSize = resultTextFontSize
+                )
+            }
+        }
     }
 }

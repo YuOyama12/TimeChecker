@@ -7,4 +7,8 @@
     <string name="end_time_title">終了時刻</string>
     <string name="check_button_text">調べる</string>
     <string name="result_history_button_text">結果履歴を表示する</string>
+    <string name="result_title">結果</string>
+    <string name="result_include_text">含む</string>
+    <string name="result_not_include_text">含まない</string>
+    <string name="no_result_text">なし</string>
 </resources>

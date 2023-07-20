@@ -8,4 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class Time(
     val hour: String = 0.toTwoDigitString(),
     val minute: String = 0.toTwoDigitString(),
-) : Parcelable
+) : Parcelable {
+    fun toTimeFormat(): String = "${this.hour}:${this.minute}"
+}
+

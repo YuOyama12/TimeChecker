@@ -24,7 +24,9 @@ import com.yuoyama12.timechecker.data.Time
 private val timeFieldSpacerModifier = Modifier.padding(vertical = 6.dp)
 private val resultTextFontSize = 30.sp
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    navigateToResultListScreen: () -> Unit
+) {
     val viewModel: MainViewModel = hiltViewModel()
     val checkResult by viewModel.checkResult.collectAsState()
 
@@ -111,7 +113,9 @@ fun MainScreen() {
         )
 
         MainButton(
-            onClick = { },
+            onClick = {
+                navigateToResultListScreen()
+            },
             buttonText = stringResource(R.string.result_history_button_text)
         )
 

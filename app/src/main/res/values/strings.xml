@@ -12,4 +12,5 @@
     <string name="result_not_include_text">含まない</string>
     <string name="no_result_text">なし</string>
     <string name="result_list_app_bar_title">結果履歴一覧</string>
+    <string name="list_item_time_range_text">%1$s ~ %2$s</string>
 </resources>

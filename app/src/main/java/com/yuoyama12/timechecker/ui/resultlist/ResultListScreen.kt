@@ -12,6 +12,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yuoyama12.timechecker.R
+import com.yuoyama12.timechecker.composable.component.CheckResultListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +52,7 @@ fun ResultListScreen(
           modifier = Modifier.padding(padding)
       ) {
           items(resultList) { result ->
-              Text(text = result.toString())
+              CheckResultListItem(checkResult = result)
           }
       }
     }

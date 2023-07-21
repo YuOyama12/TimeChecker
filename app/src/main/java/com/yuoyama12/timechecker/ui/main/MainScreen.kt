@@ -28,8 +28,8 @@ fun MainScreen(
     navigateToResultListScreen: () -> Unit
 ) {
     val viewModel: MainViewModel = hiltViewModel()
-    val checkResult by viewModel.checkResult.collectAsState()
 
+    var isIncluded: Boolean? by rememberSaveable { mutableStateOf(null) }
     var selectedTime by rememberSaveable { mutableStateOf(Time()) }
     var startTime by rememberSaveable { mutableStateOf(Time()) }
     var endTime by rememberSaveable { mutableStateOf(Time()) }
@@ -107,7 +107,11 @@ fun MainScreen(
         MainButton(
             modifier = Modifier.padding(vertical = 6.dp),
             onClick = {
-                viewModel.checkIfTimeIsInRange(selectedTime, startTime, endTime)
+                isIncluded = viewModel.checkIfTimeIsIncludedInRange(selectedTime, startTime, endTime)
+
+                if (isIncluded != null) {
+                    viewModel.insertCheckResult(selectedTime, startTime, endTime, isIncluded!!)
+                }
             },
             buttonText = stringResource(R.string.check_button_text)
         )
@@ -130,12 +134,12 @@ fun MainScreen(
                 fontWeight = FontWeight.Bold
             )
 
-            if (checkResult != null) {
+            if (isIncluded != null) {
                 RowOfCheckResultImageAndText(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     imageSize = 82.dp,
                     textFontSize = resultTextFontSize,
-                    isTrue = checkResult!!
+                    isTrue = isIncluded!!
                 )
             } else {
                 Text(

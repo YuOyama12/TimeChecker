@@ -1,11 +1,16 @@
 package com.yuoyama12.timechecker.ui.resultlist
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.yuoyama12.timechecker.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -13,6 +18,9 @@ import com.yuoyama12.timechecker.R
 fun ResultListScreen(
     onBackArrowClick: () -> Unit
 ) {
+    val viewModel: ResultListViewModel = hiltViewModel()
+    val resultList by viewModel.resultList.collectAsState(emptyList())
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -38,7 +46,13 @@ fun ResultListScreen(
                 )
             )
         }
-    ) {
-
+    ) { padding ->
+      LazyColumn(
+          modifier = Modifier.padding(padding)
+      ) {
+          items(resultList) { result ->
+              Text(text = result.toString())
+          }
+      }
     }
 }

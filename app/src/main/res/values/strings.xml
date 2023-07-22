@@ -13,4 +13,13 @@
     <string name="no_result_text">なし</string>
     <string name="result_list_app_bar_title">結果履歴一覧</string>
     <string name="list_item_time_range_text">%1$s ~ %2$s</string>
+    <string name="list_item_deleted_message">削除しました</string>
+    <string name="list_item_deleted_failed_message">削除に失敗しました。再度お試しください。</string>
+    <string name="list_item_all_cleared_message">履歴を全て削除しました</string>
+    <string name="delete_item_confirmation_dialog_title">履歴の削除</string>
+    <string name="delete_item_confirmation_dialog_message">選択した項目を削除します。よろしいですか。</string>
+    <string name="clear_list_confirmation_dialog_title">全履歴の削除</string>
+    <string name="clear_list_confirmation_dialog_message">履歴を全て削除します。よろしいですか。</string>
+    <string name="delete_confirmation_dialog_positive_button_text">削除</string>
+    <string name="dialog_cancel">キャンセル</string>
 </resources>

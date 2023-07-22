@@ -13,4 +13,12 @@ class CheckResultRepository @Inject constructor(
     fun insert(checkResult: CheckResult){
         checkResultDao.insert(checkResult)
     }
+
+    fun delete(checkResult: CheckResult) {
+        checkResultDao.delete(checkResult)
+    }
+
+    fun deleteAll() {
+        checkResultDao.deleteAll()
+    }
 }

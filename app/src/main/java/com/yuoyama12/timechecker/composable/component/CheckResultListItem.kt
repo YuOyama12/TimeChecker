@@ -1,5 +1,6 @@
 package com.yuoyama12.timechecker.composable.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.indication
@@ -21,12 +22,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yuoyama12.timechecker.R
 import com.yuoyama12.timechecker.composable.RowOfCheckResultImageAndText
+import com.yuoyama12.timechecker.composable.RowWithSimpleHeader
 import com.yuoyama12.timechecker.data.CheckResult
 
-private val timeTextPadding = 10.dp
+private val timeTextPadding = 8.dp
+private val timeRangeTextPadding = timeTextPadding.plus(6.dp)
 @Composable
 fun CheckResultListItem(
     modifier: Modifier = Modifier,
+    orientation: Int,
     checkResult: CheckResult,
     onLongClick: (CheckResult) -> Unit
 ) {
@@ -45,14 +49,15 @@ fun CheckResultListItem(
                     },
                     onLongPress = { onLongClick(checkResult) }
                 )
-        }
+            }
     ) {
         Row(
-            modifier = Modifier.padding(all = 6.dp),
+            modifier = Modifier.padding(all = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(
-                modifier = Modifier.padding(all = 8.dp)
+            LayoutCorrespondingToOrientation(
+                modifier = Modifier.padding(all = 8.dp),
+                orientation = orientation
             ) {
                 Text(
                     modifier = Modifier.padding(all = timeTextPadding),
@@ -61,19 +66,28 @@ fun CheckResultListItem(
                     fontWeight = FontWeight.Bold
                 )
 
-                Text(
-                    modifier = Modifier.padding(horizontal = timeTextPadding.plus(8.dp)),
-                    text = stringResource(
-                        R.string.list_item_time_range_text,
-                        checkResult.startTime.toTimeFormat(),
-                        checkResult.endTime.toTimeFormat()
+                RowWithSimpleHeader(
+                    modifier = when(orientation) {
+                        Configuration.ORIENTATION_PORTRAIT -> Modifier.padding(horizontal = timeRangeTextPadding)
+                        Configuration.ORIENTATION_LANDSCAPE -> Modifier.padding(all = timeRangeTextPadding)
+                        else -> Modifier.padding(horizontal = timeRangeTextPadding)
+                    },
+                    header = stringResource(R.string.list_item_time_range_title),
+                    headerModifier = Modifier.padding(horizontal = 6.dp)
+                ) {
+                    Text(
+                        text = stringResource(
+                            R.string.list_item_time_range_text,
+                            checkResult.startTime.toTimeFormat(),
+                            checkResult.endTime.toTimeFormat()
+                        )
                     )
-                )
+                }
             }
 
             RowOfCheckResultImageAndText(
-                imageSize = 40.dp,
-                textFontSize = 28.sp,
+                imageSize = 36.dp,
+                textFontSize = 24.sp,
                 isTrue = checkResult.isIncluded
             )
         }

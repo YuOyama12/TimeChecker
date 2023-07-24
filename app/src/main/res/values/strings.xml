@@ -12,6 +12,7 @@
     <string name="result_not_include_text">含まない</string>
     <string name="no_result_text">なし</string>
     <string name="result_list_app_bar_title">結果履歴一覧</string>
+    <string name="list_item_time_range_title">範囲</string>
     <string name="list_item_time_range_text">%1$s ~ %2$s</string>
     <string name="no_result_history_text">結果履歴なし</string>
     <string name="list_item_deleted_message">削除しました</string>

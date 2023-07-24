@@ -12,14 +12,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.yuoyama12.timechecker.R
 
-private val titleFontSize = 16.sp
 @Composable
 fun RowWithSimpleHeader(
     modifier: Modifier = Modifier,
     header: String,
+    headerModifier: Modifier = Modifier,
+    headerFontSize: TextUnit = TextUnit.Unspecified,
     content: @Composable RowScope.() -> Unit
 ) {
     Row(
@@ -27,13 +27,13 @@ fun RowWithSimpleHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = headerModifier
         ) {
             Text(
                 modifier = Modifier
                     .border(1.dp, MaterialTheme.colorScheme.primary, RectangleShape)
                     .padding(horizontal = 6.dp),
-                fontSize = titleFontSize,
+                fontSize = headerFontSize,
                 text = header
             )
         }

@@ -1,6 +1,7 @@
 package com.yuoyama12.timechecker.ui.resultlist
 
 import android.content.Context
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,11 +12,12 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yuoyama12.timechecker.R
 import com.yuoyama12.timechecker.composable.ConfirmationDialog
@@ -30,6 +32,9 @@ fun ResultListScreen(
 ) {
     val context = LocalContext.current
 
+    val configuration = LocalConfiguration.current
+    var orientation by remember { mutableStateOf(Configuration.ORIENTATION_PORTRAIT) }
+
     val viewModel: ResultListViewModel = hiltViewModel()
     val resultList by viewModel.resultList.collectAsState(emptyList())
 
@@ -39,6 +44,11 @@ fun ResultListScreen(
     val messageOnListCleared = stringResource(R.string.list_item_all_cleared_message)
     val messageOnItemDeleted = stringResource(R.string.list_item_deleted_message)
     val messageOnItemDeletedFailed = stringResource(R.string.list_item_deleted_failed_message)
+
+    LaunchedEffect(configuration) {
+        snapshotFlow { configuration.orientation }
+            .collect { orientation = it }
+    }
 
 
     Scaffold(
@@ -97,6 +107,7 @@ fun ResultListScreen(
                     key = { it.id },
                 ) { result ->
                     CheckResultListItem(
+                        orientation = orientation,
                         checkResult = result,
                         onLongClick = {
                             selected = it

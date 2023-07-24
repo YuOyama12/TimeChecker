@@ -1,6 +1,8 @@
 package com.yuoyama12.timechecker.ui.main
 
+import android.content.Context
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,6 +30,7 @@ import com.yuoyama12.timechecker.composable.RowOfCheckResultImageAndText
 import com.yuoyama12.timechecker.composable.RowWithSimpleHeader
 import com.yuoyama12.timechecker.composable.component.LayoutCorrespondingToOrientation
 import com.yuoyama12.timechecker.composable.component.TimeField
+import com.yuoyama12.timechecker.data.CheckResult
 import com.yuoyama12.timechecker.data.Time
 
 private val timeHeaderModifier = Modifier.padding(horizontal = 16.dp)
@@ -37,6 +41,8 @@ private val resultTextFontSize = 30.sp
 fun MainScreen(
     navigateToResultListScreen: () -> Unit
 ) {
+    val context = LocalContext.current
+
     val configuration = LocalConfiguration.current
     var orientation by remember { mutableStateOf(Configuration.ORIENTATION_PORTRAIT) }
 
@@ -48,6 +54,9 @@ fun MainScreen(
     var endTime by rememberSaveable { mutableStateOf(Time()) }
 
     val scrollState = rememberScrollState()
+
+    val messageOnResultInserted = stringResource(R.string.result_inserted_message)
+
 
     LaunchedEffect(configuration) {
         snapshotFlow { configuration.orientation }
@@ -139,10 +148,22 @@ fun MainScreen(
             MainButton(
                 modifier = Modifier.padding(vertical = 6.dp),
                 onClick = {
+                    if (viewModel.isSameToPreviousResult(selectedTime, startTime, endTime))
+                        return@MainButton
+
+                    //同値が入力されても、画面の更新処理を走らせるために一度変数を初期化。
+                    isIncluded = null
                     isIncluded = viewModel.checkIfTimeIsIncludedInRange(selectedTime, startTime, endTime)
 
                     if (isIncluded != null) {
-                        viewModel.insertCheckResult(selectedTime, startTime, endTime, isIncluded!!)
+                        val checkResult = CheckResult(
+                            selectedTime = selectedTime,
+                            startTime = startTime,
+                            endTime = endTime,
+                            isIncluded = isIncluded!!
+                        )
+                        viewModel.insertCheckResult(checkResult)
+                        showToast(context, messageOnResultInserted)
                     }
                 },
                 buttonText = stringResource(R.string.check_button_text)
@@ -183,4 +204,8 @@ fun MainScreen(
             }
         }
     }
+}
+
+fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }

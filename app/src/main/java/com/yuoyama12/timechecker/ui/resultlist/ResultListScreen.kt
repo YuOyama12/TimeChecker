@@ -1,8 +1,6 @@
 package com.yuoyama12.timechecker.ui.resultlist
 
-import android.content.Context
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,6 +22,7 @@ import com.yuoyama12.timechecker.composable.ConfirmationDialog
 import com.yuoyama12.timechecker.composable.NoListItemImage
 import com.yuoyama12.timechecker.composable.component.CheckResultListItem
 import com.yuoyama12.timechecker.data.CheckResult
+import com.yuoyama12.timechecker.ui.main.showToast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -149,8 +148,4 @@ fun ResultListScreen(
         )
     }
 
-}
-
-private fun showToast(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }

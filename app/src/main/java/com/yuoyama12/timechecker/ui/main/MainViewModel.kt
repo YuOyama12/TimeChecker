@@ -15,6 +15,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repo: CheckResultRepository,
 ) : ViewModel() {
+    private var previousCheckResult: CheckResult? = null
+
     fun checkIfTimeIsIncludedInRange(
         _time: Time,
         _start: Time,
@@ -35,27 +37,31 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun insertCheckResult(
-        time: Time,
-        start: Time,
-        end: Time,
-        isIncluded: Boolean
-    ) {
-        val checkResult =
-            CheckResult(
-                selectedTime = time,
-                startTime = start,
-                endTime = end,
-                isIncluded = isIncluded
-            )
+    fun insertCheckResult(checkResult: CheckResult) {
+        restoreCheckResult(checkResult)
 
         viewModelScope.launch(Dispatchers.IO) {
             repo.insert(checkResult)
         }
     }
 
+    fun isSameToPreviousResult(
+        time: Time,
+        startTime: Time,
+        endTime: Time
+    ): Boolean {
+        return if (previousCheckResult == null) { false }
+        else {
+            previousCheckResult!!.selectedTime == time
+                    && previousCheckResult!!.startTime == startTime
+                    && previousCheckResult!!.endTime == endTime
+        }
+    }
+
     private fun convertStringIntoTime(string: String): LocalTime =
         LocalTime.parse(string)
 
-
+    private fun restoreCheckResult(checkResult: CheckResult) {
+        previousCheckResult = checkResult
+    }
 }

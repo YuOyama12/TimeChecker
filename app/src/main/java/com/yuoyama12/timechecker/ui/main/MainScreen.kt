@@ -4,10 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -187,19 +184,26 @@ fun MainScreen(
                     fontWeight = FontWeight.Bold
                 )
 
-                if (isIncluded != null) {
-                    RowOfCheckResultImageAndText(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        imageSize = 82.dp,
-                        textFontSize = resultTextFontSize,
-                        isTrue = isIncluded!!
-                    )
-                } else {
-                    Text(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        text = stringResource(R.string.no_result_text),
-                        fontSize = resultTextFontSize
-                    )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 100.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    if (isIncluded != null) {
+                        RowOfCheckResultImageAndText(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            imageSize = 82.dp,
+                            textFontSize = resultTextFontSize,
+                            isTrue = isIncluded!!
+                        )
+                    } else {
+                        Text(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            text = stringResource(R.string.no_result_text),
+                            fontSize = resultTextFontSize
+                        )
+                    }
                 }
             }
         }

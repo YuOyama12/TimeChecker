@@ -2,6 +2,7 @@ package com.yuoyama12.timechecker.ui.resultlist
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,9 +15,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yuoyama12.timechecker.R
 import com.yuoyama12.timechecker.composable.ConfirmationDialog
+import com.yuoyama12.timechecker.composable.NoListItemImage
 import com.yuoyama12.timechecker.composable.component.CheckResultListItem
 import com.yuoyama12.timechecker.data.CheckResult
 
@@ -76,22 +79,33 @@ fun ResultListScreen(
     ) { padding ->
         var selected: CheckResult? by remember { mutableStateOf(null) }
 
-        LazyColumn(
-              modifier = Modifier.padding(padding)
-          ) {
-              items(
-                  items = resultList,
-                  key = { it.id },
-              ) { result ->
-                  CheckResultListItem(
-                      checkResult = result,
-                      onLongClick = {
-                          selected = it
-                          openDeleteItemConfirmationDialog = true
-                      }
-                  )
-              }
-          }
+        if (resultList.isEmpty()) {
+            NoListItemImage(
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize(),
+                image = painterResource(R.drawable.baseline_history_24),
+                textBelowImage = stringResource(R.string.no_result_history_text),
+                color = MaterialTheme.colorScheme.secondary
+            )
+        } else {
+            LazyColumn(
+                modifier = Modifier.padding(padding)
+            ) {
+                items(
+                    items = resultList,
+                    key = { it.id },
+                ) { result ->
+                    CheckResultListItem(
+                        checkResult = result,
+                        onLongClick = {
+                            selected = it
+                            openDeleteItemConfirmationDialog = true
+                        }
+                    )
+                }
+            }
+        }
 
         if (openDeleteItemConfirmationDialog) {
             ConfirmationDialog(

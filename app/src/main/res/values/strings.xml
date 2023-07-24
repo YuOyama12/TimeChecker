@@ -13,6 +13,7 @@
     <string name="no_result_text">なし</string>
     <string name="result_list_app_bar_title">結果履歴一覧</string>
     <string name="list_item_time_range_text">%1$s ~ %2$s</string>
+    <string name="no_result_history_text">結果履歴なし</string>
     <string name="list_item_deleted_message">削除しました</string>
     <string name="list_item_deleted_failed_message">削除に失敗しました。再度お試しください。</string>
     <string name="list_item_all_cleared_message">履歴を全て削除しました</string>
